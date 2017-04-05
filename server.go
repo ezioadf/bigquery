@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"net/http"
+	"bigquery/bqimport"
 )
 
 func hello(w http.ResponseWriter, r *http.Request) {
@@ -12,9 +13,14 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+func bqDataImport(w http.ResponseWriter, r *http.Request) {
+	bqimport.BQRead()
+}
+
 func main() {
 	http.HandleFunc("/", hello)
-	fmt.Println("Starting server on port 3001")
+	http.HandleFunc("/bigquery", bqDataImport)
+	fmt.Println("Starting server on port 3002")
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "3002"
